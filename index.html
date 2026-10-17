@@ -13,16 +13,17 @@
                     colors: {
                         tg: {
                             bg: '#0f172a',
-                            sidebar: '#1e293b',
-                            header: '#1e293b',
-                            active: '#334155',
-                            accent: '#38bdf8',
-                            accentHover: '#0284c7',
-                            bubbleIn: '#1e293b',
-                            bubbleOut: '#0284c7',
-                            text: '#f8fafc',
-                            muted: '#94a3b8',
-                            border: '#334155'
+                            sidebar: '#17212b',
+                            header: '#17212b',
+                            active: '#2b5278',
+                            hover: '#202b38',
+                            accent: '#2ea6ff',
+                            accentHover: '#2291e6',
+                            bubbleIn: '#182533',
+                            bubbleOut: '#2b5278',
+                            text: '#f5f5f5',
+                            muted: '#707f8d',
+                            border: '#0e1621'
                         }
                     }
                 }
@@ -31,60 +32,55 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.4); }
+        ::-webkit-scrollbar-thumb { background: rgba(112, 127, 141, 0.3); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(112, 127, 141, 0.5); }
         .chat-bg {
-            background-color: #0b1120;
-            background-image: radial-gradient(#1e293b 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-color: #0e1621;
+            background-image: radial-gradient(#17212b 1px, transparent 1px);
+            background-size: 24px 24px;
         }
     </style>
 </head>
 <body class="bg-tg-bg text-tg-text font-sans h-screen flex overflow-hidden select-none">
 
     <!-- AUTH SCREEN -->
-    <div id="authScreen" class="fixed inset-0 z-50 bg-tg-bg flex items-center justify-center p-4">
-        <div class="bg-tg-sidebar border border-tg-border rounded-3xl p-8 w-full max-w-md shadow-2xl relative overflow-hidden">
+    <div id="authScreen" class="fixed inset-0 z-50 bg-[#0e1621] flex items-center justify-center p-4">
+        <div class="bg-tg-sidebar border border-tg-border rounded-2xl p-8 w-full max-w-sm shadow-2xl relative">
             <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-tg-accent rounded-full flex items-center justify-center text-white text-3xl mx-auto mb-3 shadow-lg">
+                <div class="w-20 h-20 bg-tg-accent rounded-full flex items-center justify-center text-white text-4xl mx-auto mb-4 shadow-lg">
                     <i class="fa-solid fa-paper-plane"></i>
                 </div>
-                <h1 id="authTitle" class="text-2xl font-bold text-tg-text">Sign in to Telegram</h1>
-                <p id="authSubtitle" class="text-xs text-tg-muted mt-1">Please enter your details to continue</p>
+                <h1 id="authTitle" class="text-xl font-bold text-tg-text">Sign in to Telegram</h1>
+                <p id="authSubtitle" class="text-xs text-tg-muted mt-1">Please enter your phone number</p>
             </div>
 
             <!-- Tabs -->
-            <div class="flex border-b border-tg-border mb-6">
-                <button id="tabLogin" class="flex-1 py-2 text-sm font-semibold border-b-2 border-tg-accent text-tg-accent">Sign In</button>
-                <button id="tabRegister" class="flex-1 py-2 text-sm font-semibold border-b-2 border-transparent text-tg-muted hover:text-tg-text">Sign Up</button>
+            <div class="flex border-b border-tg-border mb-6 text-sm">
+                <button id="tabLogin" class="flex-1 pb-2 font-medium border-b-2 border-tg-accent text-tg-accent">Sign In</button>
+                <button id="tabRegister" class="flex-1 pb-2 font-medium border-b-2 border-transparent text-tg-muted hover:text-tg-text">Sign Up</button>
             </div>
 
             <!-- Auth Form -->
             <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
                 <div id="nameField" class="hidden">
-                    <label class="block text-xs font-medium text-tg-muted mb-1">Full Name</label>
-                    <input type="text" id="inputName" placeholder="Alex Smith" class="w-full bg-tg-bg border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
-                </div>
-
-                <div id="usernameField" class="hidden">
-                    <label class="block text-xs font-medium text-tg-muted mb-1">Username</label>
-                    <input type="text" id="inputUsername" placeholder="@alex_dev" class="w-full bg-tg-bg border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
+                    <label class="block text-xs font-medium text-tg-muted mb-1">Your Name</label>
+                    <input type="text" id="inputName" placeholder="Alex" class="w-full bg-[#0e1621] border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
                 </div>
 
                 <div>
                     <label class="block text-xs font-medium text-tg-muted mb-1">Phone Number</label>
-                    <input type="tel" id="inputPhone" required placeholder="+1 555 123 4567" class="w-full bg-tg-bg border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
+                    <input type="tel" id="inputPhone" required placeholder="+1 555 000 0000" class="w-full bg-[#0e1621] border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
                 </div>
 
                 <div>
                     <label class="block text-xs font-medium text-tg-muted mb-1">Password</label>
-                    <input type="password" id="inputPassword" required placeholder="••••••••" class="w-full bg-tg-bg border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
+                    <input type="password" id="inputPassword" required placeholder="••••••••" class="w-full bg-[#0e1621] border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
                 </div>
 
-                <button type="submit" id="submitBtn" class="w-full bg-tg-accent hover:bg-tg-accentHover text-white font-semibold py-3 rounded-xl transition shadow-lg mt-2">
-                    Sign In
+                <button type="submit" id="submitBtn" class="w-full bg-tg-accent hover:bg-tg-accentHover text-white font-medium py-3 rounded-xl transition shadow-md mt-2">
+                    Next
                 </button>
             </form>
         </div>
@@ -95,20 +91,23 @@
         <!-- Sidebar (Chat List) -->
         <aside class="w-80 md:w-96 bg-tg-sidebar border-r border-tg-border flex flex-col h-full z-10 relative">
             <!-- Sidebar Header -->
-            <div class="p-3 flex items-center gap-3 border-b border-tg-border">
-                <button id="menuBtn" onclick="toggleMenu()" class="w-10 h-10 rounded-full flex items-center justify-center text-tg-muted hover:bg-tg-active transition">
+            <div class="p-2.5 flex items-center gap-2 border-b border-tg-border">
+                <button id="menuBtn" onclick="toggleMenu()" class="w-10 h-10 rounded-full flex items-center justify-center text-tg-muted hover:bg-tg-hover transition">
                     <i class="fa-solid fa-bars text-lg"></i>
                 </button>
                 <div class="relative flex-1">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-tg-muted text-sm"></i>
-                    <input type="text" id="searchInput" placeholder="Search" class="w-full bg-tg-bg text-sm text-tg-text pl-9 pr-4 py-2 rounded-full focus:outline-none focus:ring-1 focus:ring-tg-accent">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-tg-muted text-xs"></i>
+                    <input type="text" id="searchInput" placeholder="Search" class="w-full bg-[#0e1621] text-xs text-tg-text pl-9 pr-4 py-2 rounded-full focus:outline-none focus:ring-1 focus:ring-tg-accent">
                 </div>
+                <button onclick="addNewContact()" title="New Chat" class="w-10 h-10 rounded-full flex items-center justify-center text-tg-muted hover:bg-tg-hover transition">
+                    <i class="fa-solid fa-pen-to-square text-sm"></i>
+                </button>
             </div>
 
             <!-- Slide-out Menu -->
-            <div id="sideMenu" class="hidden absolute top-16 left-0 w-full bg-tg-sidebar border-b border-tg-border shadow-xl z-20 p-4 space-y-3">
-                <div class="flex items-center gap-3 pb-3 border-b border-tg-border">
-                    <div id="menuUserAvatar" class="w-12 h-12 rounded-full bg-tg-accent flex items-center justify-center text-white font-bold text-lg">
+            <div id="sideMenu" class="hidden absolute top-14 left-0 w-72 bg-tg-sidebar border border-tg-border shadow-2xl z-30 rounded-2xl p-3 space-y-2 m-2">
+                <div class="flex items-center gap-3 p-2 border-b border-tg-border">
+                    <div id="menuUserAvatar" class="w-10 h-10 rounded-full bg-tg-accent flex items-center justify-center text-white font-bold text-sm">
                         U
                     </div>
                     <div class="overflow-hidden">
@@ -116,49 +115,48 @@
                         <p id="menuUserPhone" class="text-xs text-tg-muted truncate">+1 000 000 0000</p>
                     </div>
                 </div>
-                <button onclick="logout()" class="w-full flex items-center gap-3 text-red-400 hover:bg-tg-active p-2.5 rounded-xl text-sm transition">
+                <button onclick="logout()" class="w-full flex items-center gap-3 text-red-400 hover:bg-tg-hover p-2.5 rounded-xl text-xs transition font-medium">
                     <i class="fa-solid fa-right-from-bracket"></i> Log Out
                 </button>
             </div>
 
             <!-- Chat List -->
-            <div id="chatList" class="flex-1 overflow-y-auto divide-y divide-tg-border/30">
-                <!-- Chats will be rendered here -->
+            <div id="chatList" class="flex-1 overflow-y-auto divide-y divide-tg-border/20">
+                <!-- Chats rendered via JS -->
             </div>
         </aside>
 
         <!-- Main Chat Window -->
         <main class="flex-1 flex flex-col h-full relative chat-bg">
-            <header id="chatHeader" class="h-16 bg-tg-header border-b border-tg-border px-4 flex items-center justify-between z-10 hidden">
+            <header id="chatHeader" class="h-14 bg-tg-header border-b border-tg-border px-4 flex items-center justify-between z-10">
                 <div class="flex items-center gap-3 cursor-pointer">
-                    <div id="currentAvatar" class="w-10 h-10 rounded-full bg-tg-accent flex items-center justify-center text-white font-bold text-lg">
-                        D
+                    <div id="currentAvatar" class="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-sm">
+                        A
                     </div>
                     <div>
-                        <h2 id="currentChatName" class="font-semibold text-tg-text text-base leading-tight">Chat</h2>
-                        <p id="currentChatStatus" class="text-xs text-tg-muted">online</p>
+                        <h2 id="currentChatName" class="font-semibold text-tg-text text-sm leading-tight">Alex Designer</h2>
+                        <p id="currentChatStatus" class="text-[11px] text-tg-muted">online</p>
                     </div>
+                </div>
+                <div class="flex items-center gap-2 text-tg-muted">
+                    <button class="w-9 h-9 rounded-full flex items-center justify-center hover:bg-tg-hover transition"><i class="fa-solid fa-magnifying-glass text-sm"></i></button>
+                    <button class="w-9 h-9 rounded-full flex items-center justify-center hover:bg-tg-hover transition"><i class="fa-solid fa-ellipsis-vertical text-sm"></i></button>
                 </div>
             </header>
 
             <!-- Messages Area -->
-            <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col justify-center items-center">
-                <!-- Empty Placeholder -->
-                <div id="emptyChatPlaceholder" class="text-center p-6 bg-tg-sidebar/80 rounded-2xl border border-tg-border max-w-sm">
-                    <i class="fa-regular fa-comments text-4xl text-tg-muted mb-3 block"></i>
-                    <h3 class="text-tg-text font-semibold mb-1">No active chats</h3>
-                    <p class="text-xs text-tg-muted mb-4">Send your first message or find a contact via search.</p>
-                    <button onclick="createNewChat()" class="bg-tg-accent hover:bg-tg-accentHover text-white text-xs font-semibold px-4 py-2 rounded-xl transition">
-                        Create New Chat
-                    </button>
-                </div>
+            <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
+                <!-- Messages -->
             </div>
 
-            <footer id="chatFooter" class="p-3 bg-tg-header border-t border-tg-border flex items-end gap-2 z-10 hidden">
-                <div class="flex-1 bg-tg-bg border border-tg-border rounded-2xl flex items-center px-4 py-2 focus-within:border-tg-accent transition">
+            <footer id="chatFooter" class="p-3 bg-tg-header border-t border-tg-border flex items-end gap-2 z-10">
+                <button class="w-10 h-10 rounded-full flex items-center justify-center text-tg-muted hover:bg-tg-hover transition text-lg mb-0.5">
+                    <i class="fa-solid fa-paperclip"></i>
+                </button>
+                <div class="flex-1 bg-[#0e1621] border border-tg-border rounded-2xl flex items-center px-4 py-2 focus-within:border-tg-accent transition">
                     <textarea id="messageInput" rows="1" placeholder="Write a message..." class="w-full bg-transparent text-tg-text text-sm focus:outline-none resize-none max-h-32"></textarea>
                 </div>
-                <button id="sendBtn" class="w-10 h-10 rounded-full bg-tg-accent hover:bg-tg-accentHover text-white flex items-center justify-center transition shadow-lg mb-1">
+                <button id="sendBtn" class="w-10 h-10 rounded-full bg-tg-accent hover:bg-tg-accentHover text-white flex items-center justify-center transition shadow-md mb-0.5">
                     <i class="fa-solid fa-paper-plane text-sm"></i>
                 </button>
             </footer>
@@ -173,7 +171,6 @@
         const tabLogin = document.getElementById('tabLogin');
         const tabRegister = document.getElementById('tabRegister');
         const nameField = document.getElementById('nameField');
-        const usernameField = document.getElementById('usernameField');
         const authTitle = document.getElementById('authTitle');
         const submitBtn = document.getElementById('submitBtn');
 
@@ -183,19 +180,17 @@
         function setAuthMode(register) {
             isRegisterMode = register;
             if (register) {
-                tabRegister.className = "flex-1 py-2 text-sm font-semibold border-b-2 border-tg-accent text-tg-accent";
-                tabLogin.className = "flex-1 py-2 text-sm font-semibold border-b-2 border-transparent text-tg-muted hover:text-tg-text";
+                tabRegister.className = "flex-1 pb-2 font-medium border-b-2 border-tg-accent text-tg-accent";
+                tabLogin.className = "flex-1 pb-2 font-medium border-b-2 border-transparent text-tg-muted hover:text-tg-text";
                 nameField.classList.remove('hidden');
-                usernameField.classList.remove('hidden');
                 authTitle.innerText = "Sign Up";
-                submitBtn.innerText = "Create Account";
+                submitBtn.innerText = "Start Messaging";
             } else {
-                tabLogin.className = "flex-1 py-2 text-sm font-semibold border-b-2 border-tg-accent text-tg-accent";
-                tabRegister.className = "flex-1 py-2 text-sm font-semibold border-b-2 border-transparent text-tg-muted hover:text-tg-text";
+                tabLogin.className = "flex-1 pb-2 font-medium border-b-2 border-tg-accent text-tg-accent";
+                tabRegister.className = "flex-1 pb-2 font-medium border-b-2 border-transparent text-tg-muted hover:text-tg-text";
                 nameField.classList.add('hidden');
-                usernameField.classList.add('hidden');
                 authTitle.innerText = "Sign in to Telegram";
-                submitBtn.innerText = "Sign In";
+                submitBtn.innerText = "Next";
             }
         }
 
@@ -236,40 +231,48 @@
             }
         }
 
-        let chats = [];
-        let activeChatId = null;
-        let messagesData = {};
+        // --- ДАНІ ЧАТІВ (ВКЛЮЧАЮЧИ ДРУГА ЗА ЗАМОВЧУВАННЯМ) ---
+        let chats = [
+            {
+                id: 101,
+                name: "Alex Designer",
+                avatar: "A",
+                color: "bg-emerald-600",
+                time: "10:45",
+                lastMsg: "Hey! Check out the new UI layout when you have time.",
+                status: "online"
+            }
+        ];
+
+        let activeChatId = 101;
+        let messagesData = {
+            101: [
+                { id: 1, text: "Hey! How is the retro Android app project going?", time: "10:42", type: "in", sender: "Alex" },
+                { id: 2, text: "Going great! Testing the new web layout right now.", time: "10:44", type: "out" },
+                { id: 3, text: "Hey! Check out the new UI layout when you have time.", time: "10:45", type: "in", sender: "Alex" }
+            ]
+        };
 
         const chatListEl = document.getElementById('chatList');
         const messagesContainer = document.getElementById('messagesContainer');
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
-        const chatHeader = document.getElementById('chatHeader');
-        const chatFooter = document.getElementById('chatFooter');
 
         function renderChats() {
             chatListEl.innerHTML = '';
-            if (chats.length === 0) {
-                chatListEl.innerHTML = `
-                    <div class="p-6 text-center text-tg-muted text-xs">
-                        No active chats
-                    </div>
-                `;
-                return;
-            }
-
             chats.forEach(chat => {
+                const isActive = chat.id === activeChatId;
                 const el = document.createElement('div');
-                el.className = `flex items-center gap-3 p-3 cursor-pointer transition ${chat.id === activeChatId ? 'bg-tg-active' : 'hover:bg-tg-active/50'}`;
+                el.className = `flex items-center gap-3 px-3 py-2.5 cursor-pointer transition ${isActive ? 'bg-tg-active' : 'hover:bg-tg-hover'}`;
                 el.onclick = () => selectChat(chat.id);
                 el.innerHTML = `
-                    <div class="w-12 h-12 rounded-full ${chat.color} flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                    <div class="w-12 h-12 rounded-full ${chat.color} flex items-center justify-center text-white font-semibold text-base flex-shrink-0 shadow-sm">
                         ${chat.avatar}
                     </div>
                     <div class="flex-1 overflow-hidden">
                         <div class="flex justify-between items-center mb-1">
-                            <h3 class="font-semibold text-sm text-tg-text truncate">${chat.name}</h3>
-                            <span class="text-xs text-tg-muted">${chat.time}</span>
+                            <h3 class="font-medium text-sm text-tg-text truncate">${chat.name}</h3>
+                            <span class="text-[11px] text-tg-muted">${chat.time}</span>
                         </div>
                         <p class="text-xs text-tg-muted truncate">${chat.lastMsg}</p>
                     </div>
@@ -278,60 +281,54 @@
             });
         }
 
-        function createNewChat() {
-            const name = prompt("Enter contact name or chat title:", "New Contact");
+        function addNewContact() {
+            const name = prompt("Enter friend or contact name:", "Max Developer");
             if (!name) return;
 
             const newId = Date.now();
+            const colors = ["bg-blue-600", "bg-purple-600", "bg-amber-600", "bg-rose-600", "bg-teal-600"];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
             const newChat = {
                 id: newId,
                 name: name,
                 avatar: name[0].toUpperCase(),
-                color: "bg-blue-600",
+                color: randomColor,
                 time: "Just now",
-                lastMsg: "Chat created"
+                lastMsg: "Chat started",
+                status: "online"
             };
 
-            chats.push(newChat);
-            messagesData[newId] = [];
+            chats.unshift(newChat);
+            messagesData[newId] = [
+                { id: Date.now(), text: `Hello! This is our secure chat with ${name}.`, time: "Just now", type: "in", sender: name }
+            ];
             selectChat(newId);
-            renderChats();
         }
 
         function selectChat(id) {
             activeChatId = id;
             const chat = chats.find(c => c.id === id);
             
-            chatHeader.classList.remove('hidden');
-            chatFooter.classList.remove('hidden');
-
             document.getElementById('currentChatName').innerText = chat.name;
+            document.getElementById('currentChatStatus').innerText = chat.status;
             document.getElementById('currentAvatar').innerText = chat.avatar;
+            document.getElementById('currentAvatar').className = `w-9 h-9 rounded-full ${chat.color} flex items-center justify-center text-white font-bold text-sm`;
+            
             renderChats();
             renderMessages();
         }
 
         function renderMessages() {
             messagesContainer.innerHTML = '';
-            messagesContainer.className = "flex-1 overflow-y-auto p-4 space-y-4";
-
             const msgs = messagesData[activeChatId] || [];
             
-            if (msgs.length === 0) {
-                messagesContainer.innerHTML = `
-                    <div class="text-center text-tg-muted text-xs my-auto">
-                        Write a message to start the conversation
-                    </div>
-                `;
-                return;
-            }
-
             msgs.forEach(m => {
                 const isOut = m.type === 'out';
                 const el = document.createElement('div');
                 el.className = `flex flex-col ${isOut ? 'items-end' : 'items-start'}`;
                 el.innerHTML = `
-                    <div class="max-w-[75%] rounded-2xl px-4 py-2 text-sm ${isOut ? 'bg-tg-bubbleOut text-white rounded-br-none' : 'bg-tg-bubbleIn text-tg-text rounded-bl-none'} shadow">
+                    <div class="max-w-[70%] rounded-2xl px-3.5 py-2 text-sm ${isOut ? 'bg-tg-bubbleOut text-white rounded-br-xs' : 'bg-tg-bubbleIn text-tg-text rounded-bl-xs'} shadow-sm">
                         <p class="leading-relaxed whitespace-pre-wrap">${m.text}</p>
                         <span class="text-[10px] opacity-70 text-right block mt-1">${m.time}</span>
                     </div>
@@ -348,12 +345,15 @@
             const now = new Date();
             const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
+            if (!messagesData[activeChatId]) {
+                messagesData[activeChatId] = [];
+            }
+
             messagesData[activeChatId].push({
                 id: Date.now(),
                 text: text,
                 time: timeStr,
-                type: 'out',
-                sender: currentUser ? currentUser.name : 'You'
+                type: 'out'
             });
 
             const currentChat = chats.find(c => c.id === activeChatId);
@@ -377,6 +377,7 @@
 
         initApp();
         renderChats();
+        renderMessages();
     </script>
 </body>
 </html>
