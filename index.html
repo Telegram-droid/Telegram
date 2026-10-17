@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        tg: {
+                            bg: '#0f172a',
+                            sidebar: '#1e293b',
+                            header: '#1e293b',
+                            active: '#334155',
+                            accent: '#38bdf8',
+                            accentHover: '#0284c7',
+                            bubbleIn: '#1e293b',
+                            bubbleOut: '#0284c7',
+                            text: '#f8fafc',
+                            muted: '#94a3b8',
+                            border: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.4); }
+        .chat-bg {
+            background-color: #0b1120;
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-tg-bg text-tg-text font-sans h-screen flex overflow-hidden select-none">
+
+    <!-- AUTH SCREEN -->
+    <div id="authScreen" class="fixed inset-0 z-50 bg-tg-bg flex items-center justify-center p-4">
+        <div class="bg-tg-sidebar border border-tg-border rounded-3xl p-8 w-full max-w-md shadow-2xl relative overflow-hidden">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-tg-accent rounded-full flex items-center justify-center text-white text-3xl mx-auto mb-3 shadow-lg">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+                <h1 id="authTitle" class="text-2xl font-bold text-tg-text">Sign in to Telegram</h1>
+                <p id="authSubtitle" class="text-xs text-tg-muted mt-1">Please enter your details to continue</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex border-b border-tg-border mb-6">
+                <button id="tabLogin" class="flex-1 py-2 text-sm font-semibold border-b-2 border-tg-accent text-tg-accent">Sign In</button>
+                <button id="tabRegister" class="flex-1 py-2 text-sm font-semibold border-b-2 border-transparent text-tg-muted hover:text-tg-text">Sign Up</button>
+            </div>
+
+            <!-- Auth Form -->
+            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
+                <div id="nameField" class="hidden">
+                    <label class="block text-xs font-medium text-tg-muted mb-1">Full Name</label>
+                    <input type="text" id="inputName" placeholder="Alex Smith" class="w-full bg-tg-bg border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
+                </div>
+
+                <div id="usernameField" class="hidden">
+                    <label class="block text-xs font-medium text-tg-muted mb-1">Username</label>
+                    <input type="text" id="inputUsername" placeholder="@alex_dev" class="w-full bg-tg-bg border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-tg-muted mb-1">Phone Number</label>
+                    <input type="tel" id="inputPhone" required placeholder="+1 555 123 4567" class="w-full bg-tg-bg border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-tg-muted mb-1">Password</label>
+                    <input type="password" id="inputPassword" required placeholder="••••••••" class="w-full bg-tg-bg border border-tg-border rounded-xl px-4 py-2.5 text-sm text-tg-text focus:outline-none focus:border-tg-accent transition">
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-tg-accent hover:bg-tg-accentHover text-white font-semibold py-3 rounded-xl transition shadow-lg mt-2">
+                    Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP INTERFACE -->
+    <div id="appScreen" class="flex w-full h-full">
+        <!-- Sidebar (Chat List) -->
+        <aside class="w-80 md:w-96 bg-tg-sidebar border-r border-tg-border flex flex-col h-full z-10 relative">
+            <!-- Sidebar Header -->
+            <div class="p-3 flex items-center gap-3 border-b border-tg-border">
+                <button id="menuBtn" onclick="toggleMenu()" class="w-10 h-10 rounded-full flex items-center justify-center text-tg-muted hover:bg-tg-active transition">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-tg-muted text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="Search" class="w-full bg-tg-bg text-sm text-tg-text pl-9 pr-4 py-2 rounded-full focus:outline-none focus:ring-1 focus:ring-tg-accent">
+                </div>
+            </div>
+
+            <!-- Slide-out Menu -->
+            <div id="sideMenu" class="hidden absolute top-16 left-0 w-full bg-tg-sidebar border-b border-tg-border shadow-xl z-20 p-4 space-y-3">
+                <div class="flex items-center gap-3 pb-3 border-b border-tg-border">
+                    <div id="menuUserAvatar" class="w-12 h-12 rounded-full bg-tg-accent flex items-center justify-center text-white font-bold text-lg">
+                        U
+                    </div>
+                    <div class="overflow-hidden">
+                        <h4 id="menuUserName" class="font-semibold text-tg-text text-sm truncate">User</h4>
+                        <p id="menuUserPhone" class="text-xs text-tg-muted truncate">+1 000 000 0000</p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="w-full flex items-center gap-3 text-red-400 hover:bg-tg-active p-2.5 rounded-xl text-sm transition">
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                </button>
+            </div>
+
+            <!-- Chat List -->
+            <div id="chatList" class="flex-1 overflow-y-auto divide-y divide-tg-border/30">
+                <!-- Chats will be rendered here -->
+            </div>
+        </aside>
+
+        <!-- Main Chat Window -->
+        <main class="flex-1 flex flex-col h-full relative chat-bg">
+            <header id="chatHeader" class="h-16 bg-tg-header border-b border-tg-border px-4 flex items-center justify-between z-10 hidden">
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <div id="currentAvatar" class="w-10 h-10 rounded-full bg-tg-accent flex items-center justify-center text-white font-bold text-lg">
+                        D
+                    </div>
+                    <div>
+                        <h2 id="currentChatName" class="font-semibold text-tg-text text-base leading-tight">Chat</h2>
+                        <p id="currentChatStatus" class="text-xs text-tg-muted">online</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Messages Area -->
+            <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col justify-center items-center">
+                <!-- Empty Placeholder -->
+                <div id="emptyChatPlaceholder" class="text-center p-6 bg-tg-sidebar/80 rounded-2xl border border-tg-border max-w-sm">
+                    <i class="fa-regular fa-comments text-4xl text-tg-muted mb-3 block"></i>
+                    <h3 class="text-tg-text font-semibold mb-1">No active chats</h3>
+                    <p class="text-xs text-tg-muted mb-4">Send your first message or find a contact via search.</p>
+                    <button onclick="createNewChat()" class="bg-tg-accent hover:bg-tg-accentHover text-white text-xs font-semibold px-4 py-2 rounded-xl transition">
+                        Create New Chat
+                    </button>
+                </div>
+            </div>
+
+            <footer id="chatFooter" class="p-3 bg-tg-header border-t border-tg-border flex items-end gap-2 z-10 hidden">
+                <div class="flex-1 bg-tg-bg border border-tg-border rounded-2xl flex items-center px-4 py-2 focus-within:border-tg-accent transition">
+                    <textarea id="messageInput" rows="1" placeholder="Write a message..." class="w-full bg-transparent text-tg-text text-sm focus:outline-none resize-none max-h-32"></textarea>
+                </div>
+                <button id="sendBtn" class="w-10 h-10 rounded-full bg-tg-accent hover:bg-tg-accentHover text-white flex items-center justify-center transition shadow-lg mb-1">
+                    <i class="fa-solid fa-paper-plane text-sm"></i>
+                </button>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        let currentUser = JSON.parse(localStorage.getItem('tg_user')) || null;
+        let isRegisterMode = false;
+
+        const authScreen = document.getElementById('authScreen');
+        const tabLogin = document.getElementById('tabLogin');
+        const tabRegister = document.getElementById('tabRegister');
+        const nameField = document.getElementById('nameField');
+        const usernameField = document.getElementById('usernameField');
+        const authTitle = document.getElementById('authTitle');
+        const submitBtn = document.getElementById('submitBtn');
+
+        tabLogin.onclick = () => setAuthMode(false);
+        tabRegister.onclick = () => setAuthMode(true);
+
+        function setAuthMode(register) {
+            isRegisterMode = register;
+            if (register) {
+                tabRegister.className = "flex-1 py-2 text-sm font-semibold border-b-2 border-tg-accent text-tg-accent";
+                tabLogin.className = "flex-1 py-2 text-sm font-semibold border-b-2 border-transparent text-tg-muted hover:text-tg-text";
+                nameField.classList.remove('hidden');
+                usernameField.classList.remove('hidden');
+                authTitle.innerText = "Sign Up";
+                submitBtn.innerText = "Create Account";
+            } else {
+                tabLogin.className = "flex-1 py-2 text-sm font-semibold border-b-2 border-tg-accent text-tg-accent";
+                tabRegister.className = "flex-1 py-2 text-sm font-semibold border-b-2 border-transparent text-tg-muted hover:text-tg-text";
+                nameField.classList.add('hidden');
+                usernameField.classList.add('hidden');
+                authTitle.innerText = "Sign in to Telegram";
+                submitBtn.innerText = "Sign In";
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const phone = document.getElementById('inputPhone').value.trim();
+            const name = isRegisterMode ? document.getElementById('inputName').value.trim() : (phone || "User");
+
+            currentUser = {
+                name: name || "User",
+                phone: phone,
+                avatar: (name[0] || "U").toUpperCase()
+            };
+
+            localStorage.setItem('tg_user', JSON.stringify(currentUser));
+            initApp();
+        }
+
+        function logout() {
+            localStorage.removeItem('tg_user');
+            currentUser = null;
+            authScreen.classList.remove('hidden');
+            toggleMenu();
+        }
+
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('hidden');
+        }
+
+        function initApp() {
+            if (currentUser) {
+                authScreen.classList.add('hidden');
+                document.getElementById('menuUserName').innerText = currentUser.name;
+                document.getElementById('menuUserPhone').innerText = currentUser.phone;
+                document.getElementById('menuUserAvatar').innerText = currentUser.avatar;
+            } else {
+                authScreen.classList.remove('hidden');
+            }
+        }
+
+        let chats = [];
+        let activeChatId = null;
+        let messagesData = {};
+
+        const chatListEl = document.getElementById('chatList');
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatHeader = document.getElementById('chatHeader');
+        const chatFooter = document.getElementById('chatFooter');
+
+        function renderChats() {
+            chatListEl.innerHTML = '';
+            if (chats.length === 0) {
+                chatListEl.innerHTML = `
+                    <div class="p-6 text-center text-tg-muted text-xs">
+                        No active chats
+                    </div>
+                `;
+                return;
+            }
+
+            chats.forEach(chat => {
+                const el = document.createElement('div');
+                el.className = `flex items-center gap-3 p-3 cursor-pointer transition ${chat.id === activeChatId ? 'bg-tg-active' : 'hover:bg-tg-active/50'}`;
+                el.onclick = () => selectChat(chat.id);
+                el.innerHTML = `
+                    <div class="w-12 h-12 rounded-full ${chat.color} flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                        ${chat.avatar}
+                    </div>
+                    <div class="flex-1 overflow-hidden">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-semibold text-sm text-tg-text truncate">${chat.name}</h3>
+                            <span class="text-xs text-tg-muted">${chat.time}</span>
+                        </div>
+                        <p class="text-xs text-tg-muted truncate">${chat.lastMsg}</p>
+                    </div>
+                `;
+                chatListEl.appendChild(el);
+            });
+        }
+
+        function createNewChat() {
+            const name = prompt("Enter contact name or chat title:", "New Contact");
+            if (!name) return;
+
+            const newId = Date.now();
+            const newChat = {
+                id: newId,
+                name: name,
+                avatar: name[0].toUpperCase(),
+                color: "bg-blue-600",
+                time: "Just now",
+                lastMsg: "Chat created"
+            };
+
+            chats.push(newChat);
+            messagesData[newId] = [];
+            selectChat(newId);
+            renderChats();
+        }
+
+        function selectChat(id) {
+            activeChatId = id;
+            const chat = chats.find(c => c.id === id);
+            
+            chatHeader.classList.remove('hidden');
+            chatFooter.classList.remove('hidden');
+
+            document.getElementById('currentChatName').innerText = chat.name;
+            document.getElementById('currentAvatar').innerText = chat.avatar;
+            renderChats();
+            renderMessages();
+        }
+
+        function renderMessages() {
+            messagesContainer.innerHTML = '';
+            messagesContainer.className = "flex-1 overflow-y-auto p-4 space-y-4";
+
+            const msgs = messagesData[activeChatId] || [];
+            
+            if (msgs.length === 0) {
+                messagesContainer.innerHTML = `
+                    <div class="text-center text-tg-muted text-xs my-auto">
+                        Write a message to start the conversation
+                    </div>
+                `;
+                return;
+            }
+
+            msgs.forEach(m => {
+                const isOut = m.type === 'out';
+                const el = document.createElement('div');
+                el.className = `flex flex-col ${isOut ? 'items-end' : 'items-start'}`;
+                el.innerHTML = `
+                    <div class="max-w-[75%] rounded-2xl px-4 py-2 text-sm ${isOut ? 'bg-tg-bubbleOut text-white rounded-br-none' : 'bg-tg-bubbleIn text-tg-text rounded-bl-none'} shadow">
+                        <p class="leading-relaxed whitespace-pre-wrap">${m.text}</p>
+                        <span class="text-[10px] opacity-70 text-right block mt-1">${m.time}</span>
+                    </div>
+                `;
+                messagesContainer.appendChild(el);
+            });
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text || !activeChatId) return;
+
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+            messagesData[activeChatId].push({
+                id: Date.now(),
+                text: text,
+                time: timeStr,
+                type: 'out',
+                sender: currentUser ? currentUser.name : 'You'
+            });
+
+            const currentChat = chats.find(c => c.id === activeChatId);
+            if (currentChat) {
+                currentChat.lastMsg = text;
+                currentChat.time = timeStr;
+            }
+
+            messageInput.value = '';
+            renderMessages();
+            renderChats();
+        }
+
+        sendBtn.onclick = sendMessage;
+        messageInput.onkeydown = (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        };
+
+        initApp();
+        renderChats();
+    </script>
+</body>
+</html>
